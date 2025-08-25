@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: PREDICT-EPFL/mpt4py
-          ref: mpc-course-25fall
+          ref: main
           token: ${{ secrets.MPT4PY_TOKEN }}
 
       - name: Install uv
