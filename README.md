@@ -3,11 +3,6 @@
 This class uses Python for the coding exercises and the project.
 Below you will find instructions for installing a working Python environment and all the libraries that we will use throughout the semester.
 
-> [!WARNING]
-> This course previously used Matlab, and transitioning to Python has not been an easy task.
-> Hiccups are to be expected along the way, so do not hesitate to ask questions during exercise sessions or on the forum about any issues or bugs you may find.
-> We will make updates to correct them throughout the semester, and will inform all of you when we do (e.g. to [update the libraries](#Updating-the-libraries)).
-
 ## Setting up the environment
 
 All the exercises and the setup instructions can be found in this repo (https://github.com/PREDICT-EPFL/MPC-Course-EPFL). We will update it regularly to add exercises and fix issues.
@@ -31,8 +26,8 @@ conda info
 4. **Create environment**: In the same terminal as before, navigate inside the cloned the repo and create the conda environment with the following commands:
 
 ```bash
-conda create -y -n mpc2025 python=3.12 pip
-conda activate mpc2025
+conda create -y -n mpc2026 python=3.12 pip
+conda activate mpc2026
 pip install -r locked-requirements.txt
 ```
 
@@ -45,15 +40,15 @@ If you prefer using another editor like VSCode or PyCharm, please do! Simply mak
 For VSCode, please install the [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python) and [Jupyter](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter) extensions, and follow [these instructions](https://code.visualstudio.com/docs/python/environments#_select-and-activate-an-environment) to associate an environment to the `MPC-Course-EPFL` folder. 
 Make sure to:
 - always open `MPC-Course-EPFL` as a folder and not a workspace
-- choose the `mpc2025` conda enviroment we have just created
-- if it's not done automatically, use the kernel associated to the `mpc2025` environment in every notebook
+- choose the `mpc2026` conda enviroment we have just created
+- if it's not done automatically, use the kernel associated to the `mpc2026` environment in every notebook
 
 ## Testing the environment is properly set up
 
 The best way to test if your installation worked, is to open the first tutorial notebook [`tutorial.ipynb`](tutorial.ipynb) that will go through some documentation you might want to read to get up to speed with libraries we will use this semester.
 1. Make a copy of the `tutorial.ipynb` notebook and rename it to `my_tutorial.ipynb`.
 2. Open Jupyter Lab or VSCode as you did above.
-3. Open the `my_tutorial.ipynb` notebook and select the kernel in the `mpc2025` environment if it's not done automatically.
+3. Open the `my_tutorial.ipynb` notebook and select the kernel in the `mpc2026` environment if it's not done automatically.
 
 ## Updating the libraries
 
@@ -65,6 +60,6 @@ git pull
 ```
 2. Now open a new terminal on macOS/Linux or Anaconda Prompt/PowerShell Prompt on Windows, activate the environment again and simply reinstall the dependencies:
 ```bash
-conda activate mpc2025
+conda activate mpc2026
 pip install -r locked-requirements.txt
 ```

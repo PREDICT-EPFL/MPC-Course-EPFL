@@ -31,7 +31,7 @@ jobs:
       - name: Install conda
         uses: conda-incubator/setup-miniconda@v3
         with:
-          activate-environment: mpc2025
+          activate-environment: mpc2026
           python-version: 3.12
           add-pip-as-python-dependency: true
 
