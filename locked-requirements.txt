@@ -84,18 +84,12 @@ cvxpy==1.7.2
     # via mpt4py
 cycler==0.12.1
     # via matplotlib
-daqp==0.7.2
-    # via ppopt
 debugpy==1.8.16
     # via ipykernel
 decorator==5.2.1
     # via ipython
 defusedxml==0.7.1
     # via nbconvert
-dill==0.4.0
-    # via
-    #   multiprocess
-    #   pathos
 ecos==2.0.14
     # via mpt4py
 executing==2.2.1
@@ -112,10 +106,6 @@ frozenlist==1.7.0
     # via
     #   aiohttp
     #   aiosignal
-gurobipy==12.0.3
-    # via
-    #   mpt4py
-    #   ppopt
 h11==0.16.0
     # via httpcore
 httpcore==1.0.9
@@ -231,8 +221,6 @@ kiwisolver==1.4.9
     # via matplotlib
 lark==1.2.2
     # via rfc3987-syntax
-llvmlite==0.45.1
-    # via numba
 markdown-it-py==4.0.0
     # via rich
 markupsafe==3.0.2
@@ -247,7 +235,6 @@ matplotlib==3.10.6
     #   control
     #   ipympl
     #   mpt4py
-    #   ppopt
     #   pyvista
     #   vtk
 matplotlib-inline==0.1.7
@@ -262,7 +249,7 @@ mistune==3.1.4
     # via nbconvert
 more-itertools==10.8.0
     # via trame-server
-mpt4py==0.1.5
+mpt4py==0.1.7
     # via -r requirements.txt
 msgpack==1.1.1
     # via wslink
@@ -270,10 +257,6 @@ multidict==6.6.4
     # via
     #   aiohttp
     #   yarl
-multiprocess==0.70.18
-    # via pathos
-narwhals==2.12.0
-    # via plotly
 nbclient==0.10.2
     # via nbconvert
 nbconvert==7.16.6
@@ -295,8 +278,6 @@ notebook-shim==0.2.4
     # via
     #   jupyterlab
     #   notebook
-numba==0.62.1
-    # via ppopt
 numpy==2.3.3
     # via
     #   -r requirements.txt
@@ -313,10 +294,8 @@ numpy==2.3.3
     #   matplotlib
     #   meshio
     #   mpt4py
-    #   numba
     #   osqp
     #   piqp
-    #   ppopt
     #   pyvista
     #   qpsolvers
     #   scikit-learn
@@ -335,14 +314,11 @@ packaging==25.0
     #   jupyterlab-server
     #   matplotlib
     #   nbconvert
-    #   plotly
     #   pooch
 pandocfilters==1.5.1
     # via nbconvert
 parso==0.8.5
     # via jedi
-pathos==0.3.4
-    # via ppopt
 pexpect==4.9.0 ; sys_platform != 'emscripten' and sys_platform != 'win32'
     # via ipython
 pillow==11.3.0
@@ -357,16 +333,8 @@ platformdirs==4.4.0
     # via
     #   jupyter-core
     #   pooch
-plotly==6.5.0
-    # via ppopt
 pooch==1.8.2
     # via pyvista
-pox==0.3.6
-    # via pathos
-ppft==1.7.7
-    # via pathos
-ppopt==1.6.12
-    # via mpt4py
 prometheus-client==0.22.1
     # via jupyter-server
 prompt-toolkit==3.0.52
@@ -464,7 +432,6 @@ scipy==1.16.2
     #   mpt4py
     #   osqp
     #   piqp
-    #   ppopt
     #   qpsolvers
     #   scikit-learn
     #   scs

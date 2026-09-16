@@ -4,7 +4,7 @@ scipy
 matplotlib
 control
 casadi
-mpt4py==0.1.5
+mpt4py==0.1.7
 jupyter
 ipympl
 --find-links https://github.com/PREDICT-EPFL/MPC-Course-EPFL/releases/expanded_assets/mpt4py_wheels
