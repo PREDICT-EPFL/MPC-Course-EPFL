@@ -105,3 +105,20 @@ pip-log.txt
 
 # LaTeX build files of the written exercises
 written_exercises/build/
+
+# LaTeX intermediate files (*.log and *.out are already ignored above)
+*.aux
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.synctex(busy)
+*.toc
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.lof
+*.lot
+*.xdv
+# PDFs compiled in place next to the LaTeX sources (the real outputs live in pdfs/)
+written_exercises/src/*.pdf

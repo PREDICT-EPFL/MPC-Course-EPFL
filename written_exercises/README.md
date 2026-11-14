@@ -22,7 +22,7 @@ The PDFs are written to `pdfs/`:
 - `pdfs/exercise_N_questions.pdf`: problem set N
 - `pdfs/exercise_N_solutions.pdf`: problem set N with solutions
 
-built from `src/N_solution.tex`. Exercises are numbered from 0 (0 to 9).
+built from `src/ex_N.tex`. Exercises are numbered from 0 (0 to 9).
 
 If an exercise fails to compile, the script prints `FAILED` with the path of
 its LaTeX log in `build/aux/`.
@@ -34,8 +34,7 @@ written_exercises/
 ├── compile.sh       # build script
 ├── src/
 │   ├── main.tex         # shared preamble (packages, macros); also builds all exercises in one document
-│   ├── N_solution.tex   # exercise N, with solutions wrapped in \solution{...}
-│   ├── N.tex            # older question-only drafts, not used by the build
+│   ├── ex_N.tex         # exercise N, with solutions wrapped in \solution{...}
 │   ├── fig/             # figures used by the exercises
 │   └── references.bib
 ├── pdfs/            # generated PDFs
@@ -47,7 +46,7 @@ written_exercises/
 ## How it works
 
 `compile.sh` takes the preamble of `src/main.tex` and generates, for each
-`src/N_solution.tex`, two small wrapper documents in `build/tex/`:
+`src/ex_N.tex`, two small wrapper documents in `build/tex/`:
 
 - one with `\showSolutionfalse`, so every `\solution{...}` is hidden, giving `exercise_N_questions.pdf`
 - one with `\showSolutiontrue`, so solutions are shown, giving `exercise_N_solutions.pdf`
@@ -57,14 +56,14 @@ paths resolve relative to `src/`.
 
 ## Adding or editing an exercise
 
-- Write the questions and solutions in a single file `src/N_solution.tex`, and
+- Write the questions and solutions in a single file `src/ex_N.tex`, and
   wrap each solution in `\solution{...}`.
 - Put any figures in `src/fig/` and include them as `fig/<name>.png`.
 - New packages or macros go in the preamble of `src/main.tex`.
 - Run `./compile.sh N` to build it; this writes `pdfs/exercise_N_*.pdf`.
 
 To build all exercises into one combined document instead (each exercise
-without and then with solutions), add `\exercise{N_solution}` to the
+without and then with solutions), add `\exercise{ex_N}` to the
 document body of `src/main.tex` and compile it from `src/`:
 
 ```bash

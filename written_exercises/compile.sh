@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Compile each written exercise into a problem-set PDF and a solution PDF.
 #
-# Usage: ./compile.sh [N ...]     (default: all src/*_solution.tex)
+# Usage: ./compile.sh [N ...]     (default: all src/ex_*.tex)
 #
 # Output: pdfs/exercise_N_questions.pdf and pdfs/exercise_N_solutions.pdf
 # (exercises are numbered from 0).
@@ -17,14 +17,14 @@ BUILD_DIR="$ROOT_DIR/build"
 TEX_DIR="$BUILD_DIR/tex"    # generated wrapper .tex files
 AUX_DIR="$BUILD_DIR/aux"    # LaTeX intermediate files (.aux, .log, .pdf, ...)
 
-# Run from SRC_DIR so \input{N_solution} and fig/ paths resolve.
+# Run from SRC_DIR so \input{ex_N} and fig/ paths resolve.
 cd "$SRC_DIR"
 mkdir -p "$TEX_DIR" "$AUX_DIR"
 
 if [ "$#" -gt 0 ]; then
   exercises=("$@")
 else
-  exercises=($(ls *_solution.tex | sed -E 's|([0-9]+)_solution\.tex|\1|' | sort -n))
+  exercises=($(ls ex_*.tex | sed -E 's|ex_([0-9]+)\.tex|\1|' | sort -n))
 fi
 
 # Everything in main.tex before \begin{document}
@@ -39,7 +39,7 @@ build() {
     printf '\\pagenumbering{gobble}\n'
     printf '\\setcounter{Exercise}{%s}\n' "$n"
     printf '\\showSolution%s\n' "$show"
-    printf '\\printexercise{%s_solution}\n' "$n"
+    printf '\\printexercise{ex_%s}\n' "$n"
     printf '\\end{document}\n'
   } > "$tex"
 
@@ -56,8 +56,8 @@ build() {
 
 status=0
 for n in "${exercises[@]}"; do
-  if [ ! -f "${n}_solution.tex" ]; then
-    echo "Exercise $n: src/${n}_solution.tex not found, skipping" >&2
+  if [ ! -f "ex_${n}.tex" ]; then
+    echo "Exercise $n: src/ex_${n}.tex not found, skipping" >&2
     status=1
     continue
   fi
