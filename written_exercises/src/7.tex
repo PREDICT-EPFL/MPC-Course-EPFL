@@ -1,0 +1,18 @@
+\setcounter{section}{0}
+\section{Tube MPC}
+
+Consider the following scalar linear discrete-time system 
+    \begin{equation*}
+        x^+ = 1.1 x + u + w 
+    \end{equation*}
+under the constraints $x \in \mathbb{X} = [-2, 2]$ and $u \in \mathbb{U} = [-0.8, 0.8]$ and subject to a bounded disturbance $w \in \mathbb{W} = [-0.2,0.1]$. Design a tube-based MPC controller for this system with the following steps: 
+\begin{enumerate}
+    \item Compute the minimal robust invariant set $\mathcal{E}$ for this system under the control law $u = Kx$ with $K = -0.3$. 
+    Hint: $[a,b] \oplus [c,d] = [a+c,b+d]$ and $\sum_{i=0}^{\infty}x^{i} = \frac{1}{1-x}$ if $|x| < 1$. 
+    \vspace{5\baselineskip}
+    \item Compute the tightened constraints $\mathbb{X} \ominus \mathcal{E}$ and $\mathbb{U} \ominus K\mathcal{E}$. \vspace{5\baselineskip}
+    \item Verify terminal set feasibility. Check if $\mathbb{X}_f = [-1, 1.5]$ ensures recursive feasibility for terminal control law $u = -0.3x$. \vspace{5\baselineskip}
+    \item \textcolor{red}{CNJ: Add another step where they write out the final MPC problem.}
+\end{enumerate}
+
+

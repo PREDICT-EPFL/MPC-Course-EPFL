@@ -1,0 +1,26 @@
+\setcounter{section}{0}
+\section{Nonlinear MPC}
+
+The following is a dynamic model of a nonlinear double integrator:
+\begin{equation*}
+    \dot{x} = \begin{bmatrix}
+        \dot{x}_1 \\
+        \dot{x}_2
+    \end{bmatrix} = f(x,u) = \begin{bmatrix}
+        u \\
+        \alpha(x_1) + x_1
+    \end{bmatrix}
+\end{equation*}
+
+subject to constraints $\norm{x}_{\infty} \leq 1$ and $|u| \leq 1$. Treat $\alpha$ as a symbolic function.
+
+\begin{enumerate}
+    \item Discretize the system $x^+ = \phi(x,u)$ with a sample period of $h = 1$ seconds using Runge-Kutta 2. Assume that during the sample period, the input is constant, i.e., $u(t) = u_i$ for all $t \in [h(i),h(i+ 1)]$ for $i \in \{0,1,2, \dots \}$. 
+    \item Linearize the discrete-time system around the point $x_s = (0,0)$ and $u_s = 0$ and for $\alpha(x_1) = sin(x_1)$. 
+    \item Design a stabilizing and recursively feasible linear MPC controller for the linear discrete-time model computed in the last part.
+    \item If the input from your linear MPC controller is applied to the nonlinear system, will the closed-loop system necessarily satisfy the constraints? \\
+    If yes, prove that this is the case. \\
+    If no, give suggestions for how you can modify your controller to ensure that it does.
+\end{enumerate}
+
+

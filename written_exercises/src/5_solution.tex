@@ -1,0 +1,111 @@
+% \newpage
+% \begin{center}
+% \normalfont\Large\bfseries MPC exercise: week six
+% \end{center}
+\setcounter{section}{0}
+\section{Offset-free MPC}
+For an LTI system
+\begin{equation*}
+    x_{k+1} = Ax_k + Bu_k,
+\end{equation*}
+we take the MPC formulation
+\begin{align*}
+        \min_u \quad &\sum_{k = 0}^{N-1} x_k^{\top}Qx_k + u_k^{\top}Ru_k + x_N^{\top}Px_N,\\
+    \text{s.t.}\quad &x_{k+1} =Ax_k + Bu_k, \quad\forall k \in [N],\\
+    &Fx_k\leq f, \quad\forall k \in [N-1],\\
+    &Gu_k\leq g, \quad\forall k \in [N-1],\\
+    &Hx_N\leq h,\\
+    &x_0 = x(0).
+\end{align*}
+where $P$ is the solution to the discrete-time algebraic Riccati equation and the set $\{x|Hx\leq h\}$ is the corresponding terminal set (maximum invariant set given the optimal LQR controller). This formulation can regulate the system towards the origin with stability and recursive feasibility guarantees.
+\begin{enumerate}
+    \item \label{ex6:1} We want to reformulate the above MPC problem such that it can track a known and feasible state reference $x_s$. Assume we can measure the full state, and write down the steady state condition for $u_s$.
+
+    \solution{
+    \begin{align*}
+    x_s &= Ax_s + Bu_s\\
+    Gu_s &\le g
+    \end{align*}
+    }
+
+    \item Let $\Delta x_k = x_k - x_s$, $\Delta u_k = u_k-u_s$, and assume the terminal set under delta formulation is $\mathcal{X}_s:=\{x|H'\Delta x_N\leq h'\}$, write down the delta formulation and explain how to recover the real control inputs from the delta formulation.
+
+    \solution{
+    \begin{align*}
+        \min_u \quad &\sum_{k = 0}^{N-1} \Delta x_k^{\top}Q\Delta x_k + \Delta u_k^{\top}R\Delta u_k + \Delta x_N^{\top}P\Delta x_N,\\
+        \text{s.t.}\quad &\Delta x_{k+1} =A\Delta x_k + B\Delta u_k, \quad\forall k \in [N],\\
+        &F\Delta x_k\leq f-Fx_s, \quad\forall k \in [N-1],\\
+        &G\Delta u_k\leq g-Gu_s, \quad\forall k \in [N-1],\\
+        &H' \Delta x_N\leq h',\\
+        &\Delta x_0 = x(0) - x_s.
+    \end{align*}
+    The real input is $u_k = \Delta u_k + u_s$.}
+
+    \item The terminal set for the delta formulation is $\mathcal{X}_s:=\{x|H'\Delta x_N\leq h'\}$. There are two options for choosing $H'$ and $h'$. One is to adapt the terminal set in the original formulation, i.e., $H' = H$, $h' = h$, under the assumption that $\Delta x_N+x_s \in \{Fx\leq f\}, \forall \Delta x_N \in \mathcal{X}_s$ and $K\Delta x_N+u_s \in \{Gu\leq g\}, \forall \Delta x_N \in \mathcal{X}_s$, where $K$ is the terminal control law. If the assumption is not met, the set is rescaled until the assumptions are met. Another choice is to recalculate the terminal set based on new constraints with the delta formulation. Explain why the original terminal set is still invariant with the delta formulation. Which choice of terminal set is larger?
+
+    \solution{The original terminal set $Hx\leq h$ is an invariant set for the closed-loop system $x_{k+1} = (A+BK)x_k$. The terminal control law for both the original system and the delta formulation is the same. Hence, it is also an invariant set for $\Delta x_{k+1} = (A+BK)\Delta x_k$. The second choice is larger, since it is the maximum invariant set with the terminal control law $K$ and the new constraints. The first choice is just an invariant set. If the assumptions are not met, it will even be rescaled to a smaller set.}
+    
+    \item \label{ex6:4} Let $\mathcal{X}_s:=\{x|H'\Delta x_N\leq h'\}$. An unknown constant disturbance $d$ perturbs the LTI system, which makes the system $x_{k+1} = Ax_k + Bu_k + d$. Assume your state estimator returns a disturbance estimation $\hat{d}$ and state estimation $\hat{x}(0)$. Write down the delta formulation that tracks $x_{\text{ref}}$ while accounting for such a disturbance. Will $\hat{d}$ appear in your problem formulation?
+
+    \solution{
+    \begin{align*}
+        \min_u \quad &\sum_{k = 0}^{N-1} \Delta x_k^{\top}Q\Delta x_k + \Delta u_k^{\top}R\Delta u_k + \Delta x_N^{\top}P\Delta x_N,\\
+        \text{s.t.}\quad &\Delta x_{k+1} =A\Delta x_k + B\Delta u_k, \quad\forall k \in [N],\\
+        &F\Delta x_k\leq f-Fx_s, \quad\forall k \in [N-1],\\
+        &G\Delta u_k\leq g-Gu_s, \quad\forall k \in [N-1],\\
+        &H' \Delta x_N\leq h',\\
+        &\Delta x_0 = \hat{x}(0) - x_s.
+    \end{align*} No, $\hat{d}$ will not appear in the problem formulation. The disturbance estimate cancels out in the delta formulation since at each time step, the reference is calculated via $x_s = Ax_s + Bu_s + \hat{d}$.}
+    
+%     \item Transform the delta formulation in problem \ref{ex6:1} into a general QP form
+%     \begin{align*}
+%         \min_{\theta} \quad \theta^{\top}\Sigma\theta,\\
+%         \text{s.t.} \quad E\theta \leq e,
+%     \end{align*}
+%     which is better suited for the numerical implementation in optimization solvers. We write $\theta$ to be $[\Delta x_0^{\top},\cdots,\Delta x_N^{\top},\Delta u_0^{\top},\cdots,\Delta u_{N-1}^{\top}]^{\top}$. Assume $x_k \in \mathbb{R}^{n_x},u_k \in \mathbb{R}^{n_u}$. 
+%     Write down the matrix $\Sigma$, $E$, and $e$, specify their dimensions and components for each block.
+
+%     \solution{
+%     $\Sigma = \begin{bmatrix}
+%         Q&\cdots&0&0&0&\cdots&0\\
+%         \vdots&\ddots&\vdots&\vdots&\vdots&\ddots&\vdots&\\
+%         0&\cdots&Q&0&0&\cdots&0\\
+%         0&\cdots&0&P&0&\cdots&0\\
+%         0&\cdots&0&0&R&\cdots&0&\\
+%         \vdots&\ddots&\vdots&\vdots&\vdots&\ddots&\vdots&\\
+%         0&\cdots&0&0&0&\cdots&R
+%     \end{bmatrix}$.
+%     $E = \begin{bmatrix}
+% \textcolor{red}{A} & \textcolor{red}{\cdots} & \textcolor{red}{0} & \textcolor{red}{0} & \textcolor{red}{B} & \textcolor{red}{\cdots} & \textcolor{red}{0} \\
+% \textcolor{red}{\vdots} & \textcolor{red}{\ddots} & \textcolor{red}{\vdots} & \textcolor{red}{\vdots} & \textcolor{red}{\vdots} & \textcolor{red}{\ddots} & \textcolor{red}{\vdots} \\
+% \textcolor{red}{0} & \textcolor{red}{\cdots} & \textcolor{red}{A} & \textcolor{red}{I} & \textcolor{red}{0} & \textcolor{red}{\cdots} & \textcolor{red}{B} \\
+% \textcolor{red}{-A} & \textcolor{red}{\cdots} & \textcolor{red}{0} & \textcolor{red}{0} & \textcolor{red}{-B} & \textcolor{red}{\cdots} & \textcolor{red}{0} \\
+% \textcolor{red}{\vdots} & \textcolor{red}{\ddots} & \textcolor{red}{\vdots} & \textcolor{red}{\vdots} & \textcolor{red}{\vdots} & \textcolor{red}{\ddots} & \textcolor{red}{\vdots} \\
+% \textcolor{red}{0} & \textcolor{red}{\cdots} & \textcolor{red}{-A} & \textcolor{red}{-I} & \textcolor{red}{0} & \textcolor{red}{\cdots} & \textcolor{red}{-B} \\
+% \textcolor{blue}{F} & \textcolor{blue}{\cdots} & \textcolor{blue}{0} & \textcolor{blue}{0} & \textcolor{blue}{0} & \textcolor{blue}{\cdots} & \textcolor{blue}{0} \\
+% \textcolor{blue}{\vdots} & \textcolor{blue}{\ddots} & \textcolor{blue}{\vdots} & \textcolor{blue}{\vdots} & \textcolor{blue}{\vdots} & \textcolor{blue}{\ddots} & \textcolor{blue}{\vdots} \\
+% \textcolor{blue}{0} & \textcolor{blue}{\cdots} & \textcolor{blue}{F} & \textcolor{blue}{0} & \textcolor{blue}{0} & \textcolor{blue}{\cdots} & \textcolor{blue}{0} \\
+% \textcolor{blue}{0} & \textcolor{blue}{\cdots} & \textcolor{blue}{0} & \textcolor{blue}{H'} & \textcolor{blue}{0} & \textcolor{blue}{\cdots} & \textcolor{blue}{0} \\
+% \textcolor{green}{0} & \textcolor{green}{\cdots} & \textcolor{green}{0} & \textcolor{green}{0} & \textcolor{green}{G} & \textcolor{green}{\cdots} & \textcolor{green}{0} \\
+% \textcolor{green}{\vdots} & \textcolor{green}{\ddots} & \textcolor{green}{\vdots} & \textcolor{green}{\vdots} & \textcolor{green}{\vdots} & \textcolor{green}{\ddots} & \textcolor{green}{\vdots} \\
+% \textcolor{green}{0} & \textcolor{green}{\cdots} & \textcolor{green}{0} & \textcolor{green}{0} & \textcolor{green}{0} & \textcolor{green}{\cdots} & \textcolor{green}{G} \\
+% \textcolor{black}{I} & \textcolor{black}{\cdots} & \textcolor{black}{0} & \textcolor{black}{0} & \textcolor{black}{0} & \textcolor{black}{\cdots} & \textcolor{black}{0}
+% \end{bmatrix}$.
+%     $e = \begin{bmatrix}
+% \textcolor{red}{\hat{d}}\\
+% \textcolor{red}{\vdots}\\
+% \textcolor{red}{\hat{d}}\\
+% \textcolor{red}{\hat{d}}\\
+% \textcolor{red}{\vdots}\\
+% \textcolor{red}{\hat{d}}\\
+% \textcolor{blue}{f-Fx_s}\\
+% \textcolor{blue}{\vdots}\\
+% \textcolor{blue}{f-Fx_s}\\
+% \textcolor{blue}{h'}\\
+% \textcolor{green}{g-Gu_s}\\
+% \textcolor{green}{\vdots}\\
+% \textcolor{green}{g-Gu_s}\\
+% \textcolor{black}{\hat{x}(0) - x_{\text{ref}}}
+% \end{bmatrix}$
+% For $\Sigma$, the first block is a diagonal matrix with $Q$ as the diagonal element, representing the state cost. The middle block $P\in \mathbb{R}^{(N+1)n_x + Nn_u\times(N+1)n_x + Nn_u}$ represents the terminal cost. The lower block represents the input cost. For $E$, the red part represents the system dynamics. It is in $\mathbb{R}^{2Nn_x\times(N+1)n_x + Nn_u}$. The blue part represents the state constraints. It is in $\mathbb{R}^{(N+1)n_x\times(N+1)n_x + Nn_u}$. The green part represents the input constraints. It is in $\mathbb{R}^{Nn_u\times(N+1)n_x + Nn_u}$. The black part represents the initial state constraint. It is in $\mathbb{R}^{n_x\times(N+1)n_x + Nn_u}$.}
+\end{enumerate}

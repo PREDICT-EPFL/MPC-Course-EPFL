@@ -1,0 +1,27 @@
+\newpage
+\begin{center}
+\normalfont\Large\bfseries MPC exercise: week five
+\end{center}
+\setcounter{section}{0}
+\section{Stable and recursively feasible MPC}
+Recall the following definitions
+\begin{align*}
+    X\oplus Y : = \{x+y|x\in X, y \in Y\} \quad&\text{minkowshi sum of $X$ and $Y$},\\
+    \alpha X := \{\alpha x|x \in X\} \quad &\text{scaling of a set},\\
+    \text{if $X$ is convex: $x_1$, $x_2\in X\rightarrow \alpha x_1+(1-\alpha)x_2\in X, \forall \alpha\in[0,1]$}\quad &\text{convex set}.
+\end{align*}
+\begin{enumerate}
+    \item Let $X_1$ and $X_2$ be convex invariant sets for the system $x_{k+1}= Ax_k$. Show that $\alpha X_1\oplus (1-\alpha)X_2$ is also an invariant set for any $\alpha \in [0,1]$.\vspace{5\baselineskip}
+    \item Let $X_1\subseteq\mathbb{X}$ and $X_2\subseteq\mathbb{X}$, where $X_1$, $X_2$ and $\mathbb{X}$ are convex sets. Show that $\alpha X_1\oplus (1-\alpha)X_2\subseteq \mathbb{X}$ for any $\alpha \in [0,1]$.\vspace{5\baselineskip}
+    \item Let $V_i(x):= x^{\top}P_ix$ be a Lyapunov function for the system $x_{k+1} = Ax_k$ for $i = 1,2$, with a rate of decrease of $x^{\top}\Gamma x$, i.e.: $V_i(x_{k+1})-V_i(x_k)\leq -x^{\top}\Gamma x$. Show that $V(x) = \alpha V_1(x)+(1-\alpha)V_2(x)$ is also a Lyapunov function with a rate of decrease of $x^{\top}\Gamma x$ for any $\alpha \in [0,1]$.\vspace{5\baselineskip}
+    \item Let $K$ be a stabilizing controller for the system $x_{k+1} = Ax_k + Bu_k$, and $X_i\subset \mathbb{X}$ be a convex invariant set for the system $x_{k+1} = (A+BK)x_k$, with $KX_i\subset \mathbb{U}$ for each $i = 1,2$. $V_i(x) = x^{\top}P_ix$ are Lyapunov functions for the system $x_{k+1} = (A+BK)x_k$ with a rate of decrease of $Q+K^{\top}RK$, for some $Q = Q^{\top}\succ 0$ and $R = R^{\top} \succ 0$.
+    \begin{align*}
+        J^*(x(t)) = \min_u \quad&\sum_{i=0}^{N} x_i^{\top}Qx_i + u_i^{\top}Ru_i + \alpha V_1(x) + (1-\alpha)V_2(x),\\
+        \text{s.t.}\quad & x_{i+1} = Ax_i + Bu_i, \forall i  = 0,\hdots, N,\\
+        &x_i \in \mathbb{X},\forall i  = 1,\hdots, N,\\
+        &u_i \in \mathbb{U},\forall i  = 0,\hdots, N-1,\\
+        &x_N \in \alpha X_1 \oplus (1-\alpha)X_2,\\
+        &x_0 = x(t).
+    \end{align*}
+    Prove that this MPC controller is stabilizing and recursively feasible for any $\alpha \in [0,1]$ by listing sufficient conditions for stability and proving them. You can use the result of the previous three questions.
+\end{enumerate}

@@ -1,0 +1,111 @@
+\setcounter{section}{0}
+\section{Nonlinear MPC}
+
+The following is a dynamic model of a nonlinear double integrator:
+\begin{equation*}
+    \dot{x} = \begin{bmatrix}
+        \dot{x}_1 \\
+        \dot{x}_2
+    \end{bmatrix} = f(x,u) = \begin{bmatrix}
+        u \\
+        \alpha(x_1) + x_1
+    \end{bmatrix}
+\end{equation*}
+
+subject to constraints $\norm{x}_{\infty} \leq 1$ and $|u| \leq 1$. Treat $\alpha$ as a symbolic function.
+
+\begin{enumerate}
+    \item Discretize the system $x^+ = \phi(x,u)$ with a sample period of $h = 1$ second using Runge-Kutta 2. Assume that during the sample period, the input is constant, i.e., $u(t) = u_i$ for all $t \in [h(i),h(i+ 1)]$ for $i \in \{0,1,2, \dots \}$. 
+    
+    \solution{
+    The RK2 integration scheme needs two intermediate variables $k_1, k_2$
+    \begin{align*}
+        k_1 = f(x, u) &= \begin{bmatrix}
+        u \\
+        \alpha(x_1) + x_1
+    \end{bmatrix} \quad 
+        x + h k_1 = \begin{bmatrix}
+        x_1 + h u \\
+        x_2 + h \alpha(x_1) + h x_1
+    \end{bmatrix} \\
+        k_2 &= f(x + h k_1, u) = \begin{bmatrix}
+        u \\
+        \alpha(x_1 + h u) + x_1 + h u
+    \end{bmatrix} \\
+        x^+ &\approx x + \frac{h}{2} k_1 + \frac{h}{2} k_2 \\
+        &= \begin{bmatrix}
+            x_1 \\
+            x_2 
+        \end{bmatrix} + \frac{h}{2} \begin{bmatrix}
+        u \\
+        \alpha(x_1) + x_1
+    \end{bmatrix} + \frac{h}{2}  \begin{bmatrix}
+        u \\
+        \alpha(x_1 + h u) + x_1 + h u
+    \end{bmatrix} \\
+    &= \begin{bmatrix}
+        x_1 + h u \\
+        x_2 + h x_1 + 0.5 h^2 u + 0.5 h \alpha(x_1) + 0.5 h \alpha(x_1 + h u)
+    \end{bmatrix} = \phi(x, u)
+    \end{align*}
+    }
+    \item Linearize the discrete-time system around the point $x_s = (0,0)$ and $u_s = 0$ and for $\alpha(x_1) = \sin(x_1)$. 
+
+    \solution{
+    Compute the Jacobian of $\phi$ with respect to $x, u$:
+    \begin{equation*}
+    \begin{aligned}
+    J_x &= \begin{bmatrix}
+        \frac{\partial \phi_1}{\partial x_1} & \frac{\partial \phi_1}{\partial x_2} \\
+        \frac{\partial \phi_2}{\partial x_1} & \frac{\partial \phi_2}{\partial x_2}
+    \end{bmatrix}
+    = \begin{bmatrix}
+        1 & 0 \\
+        h+0.5 h \cos(x_1)+0.5 h \cos(x_1+h u) & 1 
+    \end{bmatrix} \\
+    J_x\rvert_{x = 0, u = 0} &= \begin{bmatrix}
+        1 & 0 \\
+        2 h & 1
+    \end{bmatrix} \\
+    J_u &= \begin{bmatrix}
+        \frac{\partial \phi_1}{\partial u} \\
+        \frac{\partial \phi_2}{\partial u}        
+    \end{bmatrix}
+    = \begin{bmatrix}
+        h \\
+        0.5 h^2+0.5 h^2 \cos(x_1+h u)
+    \end{bmatrix} \\
+    J_u\rvert_{x = 0, u = 0} &= \begin{bmatrix}
+        h \\
+        h^2
+    \end{bmatrix}
+    \end{aligned}
+    \end{equation*}
+    }
+    \item Design a stabilizing and recursively feasible linear MPC controller for the linear discrete-time model computed in the previous part. 
+
+    \solution{
+    Any standard MPC setup will do the job. Here the simplest one (terminal constraint is zero) is used: 
+    \begin{equation*}
+    \begin{aligned}
+        \min_u \quad &\sum_{k = 0}^{N-1} x_k^{\top}Qx_k + u_k^{\top}Ru_k \\
+        \text{s.t.}\quad & x_{k+1} = Ax_k + Bu_k \quad \forall k \in [N] \\
+        & \norm{x_k}_{\infty} \leq 1 \quad \forall k \in [N] \\
+        & -1 \leq u_k \leq 1 \quad \forall k \in [N] \\
+        & x_N = 0        
+    \end{aligned}
+    \end{equation*}
+    }
+    \item If the input from your linear MPC controller is applied to the nonlinear system, will the closed-loop system necessarily satisfy the constraints? 
+    \begin{itemize}
+        \item If yes, prove that this is the case. 
+        \item If no, give suggestions for how you can modify your controller to ensure that it does.
+    \end{itemize}
+    
+    \solution{
+    No, it will not because the linearization and discretization are approximate. \\ 
+    One way to ensure that it does is to bound the difference between the linear discrete-time system and the continuous-time one (in our case, $\norm{\phi - f}$), and then use robust MPC to compensate for this error.
+    }
+\end{enumerate}
+
+

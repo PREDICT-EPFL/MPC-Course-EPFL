@@ -1,0 +1,114 @@
+\setcounter{section}{0}
+
+\section{Robust Invariant Set}
+\begin{enumerate}
+    \item Consider the following scalar autonomous discrete-time system 
+    \begin{equation*}
+        x^+ = 0.5x + w 
+    \end{equation*}
+    under the constraint $x \in \mathbb{X} = [-10, 10]$ and subject to a bounded disturbance $w \in \mathbb{W} = [-1, 1]$. Compute the maximum robust invariant set. 
+    \solution{
+    \begin{align*}
+    \Omega_{0} &= [-10, 10] \\
+    \operatorname{pre}^{\mathcal{W}}\left(\Omega_{0}\right) 
+	&= \left\{x \mid -10 \leq 0.5x + w \leq 10 \text{ for all } -1 \leq w \leq 1\right\} \\
+	&= \{x \mid -20 - 2w \leq x \leq 20 + 2w \text{ for all } -1 \leq w \leq 1\} \\
+	&= \{x \mid -18 \leq x \leq 18\} \\
+    \Omega_{1} &= [-10, 10] \cap [-18, 18] = [-10, 10]
+    \end{align*}
+    Since $\Omega_{1} = \Omega_{0}$, the computation has already converged. Therefore, the maximum robust invariant set is $\mathcal{O}_{\infty}^{\mathcal{W}} = [-10, 10]$. 
+    }
+    \item Suppose that $\mathbb{Y}$ is a robust control invariant set for the system $x^+ = Ax+ Bu+ w $ subject to the state and input constraints $\mathbb{X}$ and $\mathbb{U}$ and the noise $w \in \mathbb{W}$, where $0$ is in $\mathbb{W}$, $\mathbb{X}$ and $\mathbb{U}$. For which of the following scenarios is $\mathbb{Y}$ still a robust control invariant set for the resulting system?
+    \begin{enumerate}
+        \item Disturbance set changes to $\alpha \mathbb{W}$ for some $\alpha \in \mathbb{R}_{+}$. 
+        
+        \solution{
+        By definition of $\mathbb{Y}$, $\forall x \in \mathbb{Y} \subseteq \mathbb{X}$, there exists an input $u \in \mathbb{U}$ ensuring that $\forall w \in \mathbb{W}$, the next state $x^+ = Ax + Bu + w$ will be also in the set $\mathbb{Y}$. \\
+        If $\alpha \leq 1$, then $\alpha \mathbb{W} \subseteq \mathbb{W}$, so $\forall w \in \alpha \mathbb{W} \subseteq \mathbb{W}$, the same input $u$ can still ensure $x^+ \in \mathbb{Y}$. \\
+        If $\alpha > 1$, then there exists $w \in \alpha \mathbb{W}$ but $w \notin \mathbb{W}$, so it is NOT guaranteed that an input $u \in \mathbb{U}$ can always be found to ensure $x^+ \in \mathbb{Y}$. \\
+        In short, if $\mathbb{W}$ becomes larger, then we might not have enough capability from $u \in \mathbb{U}$ to counteract. 
+        }
+        \item Input constraint set changes to $\alpha \mathbb{U}$ for some $\alpha \in \mathbb{R}_{+}$. 
+
+        \solution{
+        By definition of $\mathbb{Y}$, $\forall x \in \mathbb{Y} \subseteq \mathbb{X}$, there exists an input $u \in \mathbb{U}$ ensuring that $\forall w \in \mathbb{W}$, the next state $x^+ = Ax + Bu + w$ will be also in the set $\mathbb{Y}$. \\
+        If $\alpha \geq 1$, then $\mathbb{U} \subseteq \alpha \mathbb{U}$, so $\forall w \in \mathbb{W}$, the same input $u \in \mathbb{U} \subseteq \alpha \mathbb{U}$ can still ensure $x^+ \in \mathbb{Y}$. \\
+        If $\alpha < 1$, then there exists $u \in \mathbb{U}$ but $u \notin \alpha \mathbb{U}$.  So there might exist a disturbance $w \in \mathbb{W}$ that needs $u \in \mathbb{U}$ to ensure robust invariance but $u \notin \alpha \mathbb{U}$, so robust invariance of $\mathbb{Y}$ cannot be guaranteed. \\
+        In short, if $\mathbb{U}$ becomes smaller, then our capability to counteract might shrink. 
+        }
+    \end{enumerate}
+\end{enumerate}
+
+\section{Robust linear MPC for nonlinear system}
+Consider the following nonlinear discrete-time dynamic system 
+\begin{equation*}
+    x^+ = rx(1-x^2) + u = f(x,u)
+\end{equation*}
+subject to the state and input constraints $x \in \mathbb{X} = [-0.5, 0.5]$ and $u \in \mathbb{U} = [-1, 1]$. Treat $r$ symbolically as a constant $ r \in (0, 0.5)$. Design a robust linear MPC controller for this nonlinear system to regulate it to the origin with the following steps: 
+\begin{enumerate}
+    \item Find values $a, b$ by linearizing the system around the origin and the smallest $\bar{w}$ such that the evolution of the following uncertain linear dynamic system contains that of the nonlinear system above for all $x \in \mathbb{X}, u \in \mathbb{U}$. 
+    \begin{equation*}
+        x^+ = ax + bu + w \qquad w \in \mathbb{W} = \bar{w} \cdot [-1, 1]
+    \end{equation*}
+
+    \solution{
+    The idea is to find $a, b, \bar{w}$ to ensure that $\forall (x,u) \in \mathbb{X} \times \mathbb{U}$, there exists $w \in \mathbb{W}$ such that $ax + bu + w = f(x,u)$. 
+    Rewrite the system as a polynomial: $rx - rx^3 + u$. \\
+    Linearize the system around $x = 0, u = 0$:
+    \begin{align*}
+        a &= r - 3rx^2 \rvert_{x=0} = r \\
+        b &= 1
+    \end{align*}
+    The maximum error will occur at the boundary, so we get that $\bar{w} = 0.5r - 0.5r(1-0.5^2) = \tfrac{r}{8}$. 
+    }
+    \item Compute the maximum robust invariant set $\mathbb{X}_f$ for the linearized system within the constraint set $\mathbb{X}$ for the control law $u = 0$. Use the value $\bar{w}= 0.1$ for this question. 
+
+    \solution{
+    Our linearized system is $x^+ = rx + w$, for $|w| \leq 0.1$. \\
+    We compute the robust pre-set of an interval $[-\alpha, \alpha]$
+    \begin{equation*}
+    \begin{aligned}
+        \operatorname{pre}([-\alpha, \alpha]) & =\{x|-\alpha \leq r x+w \leq \alpha \ \forall |w| \leq 0.1\} \\
+        & =\{x \mid-\alpha+0.1 \leq r x \leq \alpha-0.1\} \\
+        & =\left\{x \left\lvert\,-\frac{\alpha-0.1}{r} \leq x \leq \frac{\alpha-0.1}{r}\right.\right\} \\
+        & =\left[-\frac{\alpha-0.1}{r}, \frac{\alpha-0.1}{r}\right]
+    \end{aligned}
+    \end{equation*}
+    The pre-set of $\mathbb{X} = [-0.5, 0.5]$ is 
+    \begin{equation*}
+        \operatorname{pre}\left(\left[-\frac{1}{2}, \frac{1}{2}\right]\right)=\left[-\frac{0.5-0.1}{r}, \frac{0.5-0.1}{r}\right]=\left[-\frac{0.4}{r}, \frac{0.4}{r}\right] \supset \mathbb{X}
+    \end{equation*}
+    because $r \in (0, 0.5)$. So, $\mathbb{X}_f = \mathbb{X}$. 
+    }
+    \item Design a set $C(x)$ such that any controller $u(x) \in C(x)$ will ensure robust constraint satisfaction in two stages of open-loop control of the linearized system. 
+    Use the value $\bar{w}= 0.1$ for this question. \\
+    Hint: the set $C(x)$ has the shape of 
+    \begin{equation*}
+        C(x) \coloneqq \Big\{ u_0 \Big| \exists u_1 \text{ s.t. } -h \leq G \begin{bmatrix}
+            u_0 \\
+            u_1 \\
+            x
+        \end{bmatrix} \leq h \Big\}
+    \end{equation*}
+    where $x$ is the current state, $u_0$ is the next input to apply, and $u_1$ is the planned input in the next stage. The problem is converted to finding a proper matrix-vector pair of $(G, h)$. 
+
+    \solution{
+    $u_0$ needs to ensure that $x^+ = rx + u_0 + \bar{w} \in [-0.5, 0.5]$ holds. So $-0.4 \leq u_0 + rx \leq 0.4$. \\
+    $u_0, u_1$ need to ensure that $x^{++} = r^2 x + ru_0 + u_1 + r\bar{w} + \bar{w} \in [-0.5, 0.5]$ holds. So $-0.4 + 0.1r \leq ru_0 + u_1 + r^2 x \leq 0.4 - 0.1r$. \\
+    $u_0, u_1$ need to satisfy the input constraint $u \in [-1, 1]$. \\
+    As a result, 
+    \begin{equation*}
+        G = \left[ \begin{array}{c;{2pt/2pt}c;{2pt/2pt}c}
+            1 & & r \\ \hdashline[2pt/2pt]
+            r & 1 & r^2 \\ \hdashline[2pt/2pt]
+            1 & \\ \hdashline[2pt/2pt]
+            & 1 & 
+        \end{array} \right] \quad h = \begin{bmatrix}
+            0.4 \\ \hdashline[2pt/2pt]
+            0.4 - 0.1r \\ \hdashline[2pt/2pt]
+            1 \\ \hdashline[2pt/2pt]
+            1
+        \end{bmatrix}
+    \end{equation*}
+    }
+\end{enumerate}

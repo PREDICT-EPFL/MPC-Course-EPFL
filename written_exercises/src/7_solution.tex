@@ -1,0 +1,95 @@
+\setcounter{section}{0}
+\section{Tube MPC}
+
+Consider the following scalar linear discrete-time system 
+    \begin{equation*}
+        x^+ = 1.1 x + u + w 
+    \end{equation*}
+under the constraints $x \in \mathbb{X} = [-2, 2]$ and $u \in \mathbb{U} = [-0.8, 0.8]$ and subject to a bounded disturbance $w \in \mathbb{W} = [-0.2,0.1]$. Design a tube-based MPC controller for this system with the following steps: 
+\begin{enumerate}
+    \item Compute the minimal robust invariant set $\mathcal{E}$ for this system under the control law $u = Kx$ with $K = -0.3$. 
+    Hint: $[a,b] \oplus [c,d] = [a+c,b+d]$ and $\sum_{i=0}^{\infty}x^{i} = \frac{1}{1-x}$ if $|x| < 1$.
+
+    \solution{
+    $x^+ = (A+BK) x = 0.8x$ is the closed-loop system. 
+    \begin{equation*}
+        \begin{aligned}
+            \Omega_{0} &= [0, 0] \\  
+            \Omega_{1} &= [-0.2, 0.1] \\
+            \Omega_{2} &= 0.8 \cdot [-0.2, 0.1] \oplus [-0.2, 0.1] \\
+            \Omega_{3} &= 0.8^{2} \cdot [-0.2, 0.1] \oplus 0.8 \cdot [-0.2, 0.1] \oplus [-0.2, 0.1] \\ 
+            & ~~\vdots \\ 
+            \mathcal{E} & = \left[ -0.2 \cdot \sum_{i=0}^\infty 0.8^{i}, 0.1 \cdot \sum_{i=0}^\infty 0.8^{i} \right] \\
+            & = \left[ -0.2 \cdot 5, 0.1 \cdot 5 \right] \\
+            & = \left[ -1, 0.5 \right] 
+        \end{aligned}
+    \end{equation*}
+    }
+    \item Compute the tightened constraints $\mathbb{X} \ominus \mathcal{E}$ and $\mathbb{U} \ominus K\mathcal{E}$. 
+    
+    \solution{
+    \begin{equation*}
+        \begin{aligned}
+        \mathbb{X} \ominus \mathcal{E} &= \tilde{\mathbb{X}} = [-2, 2] \ominus [-1, 0.5] = [-1, 1.5] \\
+        \mathbb{U} \ominus K\mathcal{E} &= \tilde{\mathbb{U}} = [-0.8, 0.8] \ominus -0.3 \cdot [-1, 0.5] = [-0.8, 0.8] \ominus [-0.15, 0.3] = [-0.65, 0.5]
+        \end{aligned}
+    \end{equation*}
+    }
+    \item Verify terminal set feasibility. Check if $\mathcal{X}_{f} = [-1, 1.5]$ ensures recursive feasibility for terminal control law $u = -0.3x$. 
+    
+    \solution{
+    The set $\mathcal{X}_{f}$ must be invariant for the nominal system subject to the tightened constraints. \\
+    Invariance: 
+    \begin{equation*}
+        (A + BK)\mathcal{X}_{f} = 0.8 \cdot [-1, 1.5] = [-0.8, 1.2] \subset \mathcal{X}_{f}
+    \end{equation*}
+    Constraint satisfaction:  
+    \begin{equation*}
+    \begin{aligned}
+        \mathcal{X}_{f} \subseteq \tilde{\mathbb{X}} &\Leftrightarrow [-1, 1.5] \subseteq [-1, 1.5] \\
+        K\mathcal{X}_{f} \subseteq \tilde{\mathbb{U}} &\Leftrightarrow -0.3 \cdot [-1, 1.5] \subseteq [-0.65, 0.5] \\
+        &\Leftrightarrow [-0.45, 0.3] \subseteq [-0.65, 0.5]        
+    \end{aligned}
+    \end{equation*}
+    }
+    \item Write out the formulation of a tube-MPC controller with all ingredients above.
+
+    \solution{
+    Recall that a tube-MPC controller solves the following optimization problem
+    \begin{align*}
+        \min_{z, v} \quad&\sum_{k=0}^{N-1} z_k^{\top}Q z_k + v_k^{\top}R v_k + z_N^{\top}P z_N \\
+        \text{s.t.} \quad & z_{k+1} = Az_k + Bv_k \quad \forall k \in [N] \\
+        &z_k \in \mathbb{X} \ominus \mathcal{E} \quad \forall k \in [N-1] \\
+        &v_k \in \mathbb{U} \ominus K\mathcal{E} \quad \forall k \in [N-1] \\
+        &z_N \in \mathcal{X}_{f} \\
+        &x_0 \in z_0 \oplus \mathcal{E}
+    \end{align*}
+    collect the trajectory $\{z_k^*, v_k^*\}$ and use the control law: $\mu_{\text{tube}}(x) = K_s(x - z_0^*) + v_0^*$. The stabilizing controller $K_s$ is chosen a priori. The terminal cost $V_f(z) = z^{\top}P z$ and the terminal constraint $\mathcal{X}_{f}$ must satisfy certain conditions (slide 35) under the local control law $\kappa_f(z) = K_f z$. In general, $K_s$ can be different from $K_f$. In our case, the minimal robust invariant set $\mathcal{E}$, the tightened constraints $\tilde{\mathbb{X}}, \tilde{\mathbb{U}}$, and the terminal constraints $\mathcal{X}_{f}$ are all calculated based on $K = -0.3$. 
+    The algebraic Riccati equation and the corresponding feedback matrix are: 
+    \begin{equation*}
+    \begin{aligned}
+        P &= Q + A^{\top} P A - A^{\top} PB (R + B^{\top} P B)^{-1} B\tp P A \\
+        &= Q + K\tp R K + (A+BK)\tp P (A+BK) \\
+        K &= -(R + B^{\top} P B)^{-1} B\tp P A
+    \end{aligned}
+    \end{equation*}
+    In our case, $A = 1.1, B = 1, K = -0.3$. So, 
+    \begin{equation*}
+        \begin{aligned}
+            K &= -(R+P)\iv P \cdot 1.1 = -0.3 \\
+            P &= Q + 0.3^2 R + 0.8^2 P
+        \end{aligned}
+    \end{equation*}
+    which makes $P = \tfrac{3}{8}R$ and $Q = \tfrac{9}{200}R$. Choosing $R = 1$, the tube-MPC now becomes 
+    \begin{align*}
+        \min_{z, v} \quad&\sum_{k=0}^{N-1} \frac{9}{200} z_k^{2} + v_k^{2} + \frac{3}{8} z_N^{2} \\
+        \text{s.t.} \quad & z_{k+1} = 1.1 z_k + v_k \quad \forall k \in [N] \\
+        &z_k \in [-1, 1.5] \quad \forall k \in [N-1] \\
+        &v_k \in [-0.65, 0.5] \quad \forall k \in [N-1] \\
+        &z_N \in [-1, 1.5] \\
+        &x_0 \in z_0 \oplus [-1, 0.5]
+    \end{align*}
+    }
+\end{enumerate}
+
+

@@ -1,0 +1,117 @@
+\documentclass{article} 
+
+\usepackage[a4paper, total={6.6in, 9.1in}]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyhdr}
+\usepackage{parskip}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{tikz}
+\usepackage{amsthm}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{pgfgantt}
+\usepackage{siunitx}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{bm}
+\usepackage{ulem}
+\usepackage{tikz}
+\usepackage{colortbl}
+\usepackage{cmbright}
+\usepackage{mathtools}
+\usepackage{arydshln}
+\usetikzlibrary{positioning,arrows}
+\newtheorem{remark}{Remark}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+
+ {
+      \theoremstyle{plain}
+      \newtheorem{assumption}{Assumption}
+  }
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\bee}{\begin{eqnarray}}
+%\newcommand{\bee}{\begin{align}}
+\newcommand{\eee}{\end{eqnarray}}
+\newcommand{\bse}{\begin{subequations}}
+	\newcommand{\ese}{\end{subequations}}
+\newcommand{\defeq}{\overset{\text{\tiny def}}{=}}
+\newcommand{\tp}{^{\top}}
+\newcommand{\itp}{^{-\top}}
+\newcommand{\iv}{^{-1}}
+
+\newif\ifshowSolution
+\showSolutionfalse   % or \showSolutiontrue
+
+
+% \newcommand{\solution}[1]{\textcolor{blue}{#1}}
+\newcommand{\solution}[1]{%
+  \ifshowSolution
+    \textcolor{blue}{#1}%
+  \fi
+}
+
+\newcommand{\bb}[1]{\mathbb{#1}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+%\newcommand{\eee}{\end{align}}
+\newcommand{\E}{\mathop{\mathbb{E}}}
+
+\newcommand{\todo}[1]{\textcolor{red}{TODO: #1}\PackageWarning{TODO:}{#1!}}
+\newcommand{\comment}[1]{}
+\providecommand{\keywords}[1]
+{
+  \small	
+  \textbf{\textit{Keywords---}} #1
+}
+
+% Commenting for different authors
+\usepackage{xcolor}
+\usepackage{ulem}
+% For Bratislav Svetozarevic
+\newcommand{\BS}{\color{magenta}}
+
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+
+\newcounter{Exercise}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\newcommand{\exercise}[1]{
+\showSolutionfalse
+\printexercise{#1}
+\showSolutiontrue
+\printexercise{#1}
+\stepcounter{Exercise}
+}
+
+\newcommand{\printexercise}[1]{
+\clearpage%
+\begin{center}
+\normalfont\Large\bfseries Exercise \theExercise
+\end{center}\input{#1}}
+
+\begin{document}
+\pagenumbering{gobble}
+\exercise{0_solution}
+\exercise{1_solution}
+\exercise{2_solution}
+\exercise{3_solution}
+\exercise{4_solution}
+\exercise{5_solution}
+\exercise{6_solution}
+\exercise{7_solution}
+\exercise{8_solution}
+\exercise{9_solution}
+
+
+
+\end{document}

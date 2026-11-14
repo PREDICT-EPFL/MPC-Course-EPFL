@@ -1,0 +1,41 @@
+% \newpage
+% \begin{center}
+% \normalfont\Large\bfseries MPC exercise: week five
+% \end{center}
+\setcounter{section}{0}
+\section{Stable and recursively feasible MPC}
+Recall the following definitions
+\begin{align*}
+    X\oplus Y := \{x+y|x\in X, y \in Y\} \quad&\text{Minkowski sum of $X$ and $Y$},\\
+    \alpha X := \{\alpha x|x \in X\} \quad &\text{scaling of a set},\\
+    \text{if $X$ is convex: $x_1$, $x_2\in X\rightarrow \alpha x_1+(1-\alpha)x_2\in X, \forall \alpha\in[0,1]$}\quad &\text{convex set}.
+\end{align*}
+\begin{enumerate}
+    \item Let $X_1$ and $X_2$ be convex invariant sets for the system $x_{k+1} = Ax_k$. Show that $\alpha X_1\oplus (1-\alpha)X_2$ is also an invariant set for any $\alpha \in [0,1]$.
+
+    \solution{We want to show that if $x_k\in \alpha X_1\oplus (1-\alpha)X_2$, $x_{k+1}\in\alpha X_1\oplus (1-\alpha)X_2$. Suppose that $x_k\in\alpha X_1\oplus (1-\alpha)X_2$, which means that $\exists x_1\in X_1, x_2\in X_2$ such that $x_k = \alpha x_1 + (1-\alpha)x_2$. $x_{k+1} = Ax_k = \alpha Ax_1 + (1-\alpha)Ax_2$. Since $X_1, X_2$ are invariant sets, $Ax_1\in X_1,Ax_2\in X_2$. That means $x_{k+1}\in\alpha X_1\oplus (1-\alpha)X_2$.}
+    \item Let $X_1\subseteq\mathbb{X}$ and $X_2\subseteq\mathbb{X}$, where $X_1$, $X_2$ and $\mathbb{X}$ are convex sets. Show that $\alpha X_1\oplus (1-\alpha)X_2\subseteq \mathbb{X}$ for any $\alpha \in [0,1]$.
+
+    \solution{If $x\in \alpha X_1\oplus (1-\alpha)X_2$, $\exists x_1\in X_1, x_2\in X_2$ such that $x = \alpha x_1 + (1-\alpha)x_2$. Since both $x_1, x_2\in \mathbb{X}$ and $\mathbb{X}$ is a convex set, by convexity, we conclude $x\in \mathbb{X}$.}
+    \item Let $V_i(x):= x^{\top}P_ix$ be a Lyapunov function for the system $x_{k+1} = Ax_k$ for $i = 1,2$, with a rate of decrease of $x^{\top}\Gamma x$, i.e.: $V_i(x_{k+1})-V_i(x_k)\leq -x^{\top}\Gamma x$. Show that $V(x) = \alpha V_1(x)+(1-\alpha)V_2(x)$ is also a Lyapunov function with a rate of decrease of $x^{\top}\Gamma x$ for any $\alpha \in [0,1]$.
+
+    \solution{To show $V(x)$ is a Lyapunov function with the same decreasing rate, we need to show that $V(x_{k+1})-V(x_k)\leq -x^{\top}\Gamma x$. $V(x_{k+1}) = \alpha V_1(x_{k+1})+(1-\alpha)V_2(x_{k+1}) = \alpha x_k^{\top}A^{\top}P_1Ax_k+(1-\alpha)x_k^{\top}A^{\top}P_2Ax_k$. $V(x_{k+1})-V(x_k) = \alpha x_k^{\top}(A^{\top}P_1A-P_1)x_k+(1-\alpha)x_k^{\top}(A^{\top}P_2A-P_2)x_k\leq-\alpha x_k^{\top}\Gamma x_k-(1-\alpha)x_k^{\top}\Gamma x_k = -x_k^{\top}\Gamma x_k$.}
+    \item Let $K$ be a stabilizing controller for the system $x_{k+1} = Ax_k + Bu_k$, and $X_i\subset \mathbb{X}$ be a convex invariant set for the system $x_{k+1} = (A+BK)x_k$, with $KX_i\subset \mathbb{U}$ for each $i = 1,2$. $V_i(x) = x^{\top}P_ix$ are Lyapunov functions for the system $x_{k+1} = (A+BK)x_k$ with a rate of decrease of $Q+K^{\top}RK$, for some $Q = Q^{\top}\succ 0$ and $R = R^{\top} \succ 0$.
+    \begin{align*}
+        J^*(x(t)) = \min_u \quad&\sum_{k=0}^{N-1} x_k^{\top}Qx_k + u_k^{\top}Ru_k + \alpha V_1(x_N) + (1-\alpha)V_2(x_N),\\
+        \text{s.t.}\quad & x_{k+1} = Ax_k + Bu_k, \forall k  = 0,\hdots, N-1,\\
+        &x_k \in \mathbb{X},\forall k  = 1,\hdots, N,\\
+        &u_k \in \mathbb{U},\forall k  = 0,\hdots, N-1,\\
+        &x_N \in \alpha X_1 \oplus (1-\alpha)X_2,\\
+        &x_0 = x(t).
+    \end{align*}
+    Prove that this MPC controller is stabilizing and recursively feasible for any $\alpha \in [0,1]$ by listing sufficient conditions for stability and proving them. You can use the result of the previous three questions.
+
+    \solution{Sufficient conditions: 
+    \begin{itemize}
+        \item stage cost is positive definite,
+        \item the terminal set is invariant under the local control law (proved by question 1.1),
+        \item all state and input constraints are satisfied in the terminal set (proved by question 1.2),
+        \item the terminal cost is a Lyapunov function in the terminal set (proved by question 1.3).
+    \end{itemize}}
+\end{enumerate}

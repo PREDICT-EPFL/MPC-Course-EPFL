@@ -1,0 +1,43 @@
+\setcounter{section}{0}
+\section{Explicit MPC}
+
+Compute the explicit MPC controller for the following 
+\begin{align*}
+    u^*(x) = \text{argmin} & \quad 2 u\tp u + (x+u)\tp H (x+u) \\
+    \text{s.t.} & \quad u \in [-1,1]
+\end{align*}
+where $H$ is the solution to the discrete-time algebraic Riccati equation for $A = 1, B = 1, Q = 1$ and $R=2$. 
+
+\solution{
+Compute $H$ from the algebraic Riccati equation 
+\begin{equation*}
+    \begin{aligned}
+        H &= Q + A\tp H A - A\tp H B (R + B\tp H B )\iv B\tp H A \\
+        H &= 1 + H - \frac{H^2}{H+2} \\
+        0 &= H^2 - H - 2 = (H-2)(H+1)
+    \end{aligned}
+\end{equation*}
+$H=2>0$ is the solution, so the parametric optimization problem is now
+\begin{align*}
+    u^*(x) = \text{argmin} & \quad 2 u\tp u + 2(x+u)\tp(x+u) \\
+    \text{s.t.} & \quad u \in [-1,1]
+\end{align*}
+We solve for the case with no constraints by setting the derivative to zero:
+\begin{equation*}
+    4 u^* + 4 (x + u^*) = 0 \Rightarrow u = -\frac{x}{2}
+\end{equation*}
+This is the control law for $u \in [-1, 1]$. The control law will saturate if $u$ is outside this range. 
+\begin{equation*}
+    u^*(x) = \begin{cases}
+        -1 \quad \text{if} \quad x \in (2, \infty) \\
+        -\frac{x}{2} \quad \text{if} \quad x \in [-2, 2] \\
+        1 \quad \text{if} \quad x \in (-\infty, -2)
+    \end{cases}
+\end{equation*}
+}
+
+% \textcolor{red}{CNJ: Check that the solution actually looks good, and then break this down into steps. First, have them compute H (and check that it's actually a good number?), then have them write the pLCP - you'll find that at this step, there's a problem, since it's required that u > 0 for the standard QP -> LCP (unless you lead them through a transformation process to convert to positive variables). Note that the pLCP needs to be 2D, otherwise they can't compute anything...
+% So it might be easier to just give them a 2D pLCP that's in a good form, and then they can
+% 1) Draw the complementary cones and the affine set
+% 2) Compute the solution for all four cones
+% 3) Draw the solution}

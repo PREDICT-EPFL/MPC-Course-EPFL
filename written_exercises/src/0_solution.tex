@@ -1,0 +1,81 @@
+% \newpage
+% \begin{center}
+% \normalfont\Large\bfseries MPC exercise: week one
+% \end{center}
+\setcounter{section}{0}
+
+\section{Understanding MPC}
+\begin{enumerate}
+    \item What are the advantages and disadvantages of using MPC instead of using classical controllers such as PID?
+    
+    \solution{Advantage: MPC formulation can handle constraints. It can better handle Multi-Input Multi-Output (MIMO) systems. The design of the cost function provides flexibility for controller performance.}
+    
+    \solution{Disadvantage: MPC requires heavy online computation as it solves an optimization problem at each iteration. The problem might be hard to solve, e.g., non-convex and non-differentiable. It requires an accurate system model.}
+    
+    
+    \item Explain how the receding-horizon works, what are the advantages and disadvantages of choosing a long horizon?
+    
+    \solution{For the MPC controller, every time when an optimal control problem is solved, only the first control input is implemented in the system. Then at the next iteration, a new optimization problem is formulated and solved via the new system measurement. This makes the receding-horizon formulation.}
+    
+    \solution{Advantage: long horizon will make the MPC behave more like an infinite horizon LQR controller. The controller has more information about the future and can avoid myopic behavior.}
+
+    \solution{Disadvantage: a long horizon will make the optimization problem harder to solve as the number of variables increases. The model mismatch also grows with a longer horizon. The prediction will become less accurate in the distant future.}
+    
+    \item What is the difference between open-loop optimal control and MPC? Why does MPC recompute the control sequence at each time step instead of using the whole open-loop plan?
+    
+    \solution{The difference between open-loop optimal control and MPC is that MPC has a receding horizon structure. At each time step, an open-loop optimal control problem is formulated and solved. However, only the first control input is actuated. On the other hand, the open-loop optimal controller will actuate all the control actions.}
+    
+    \solution{The reason MPC does not use the whole open-loop plan is that in practice, there are disturbances in the system, which will result in a mismatch between the actual state and the prediction. The receding-horizon introduces a feedback nature that can act against such disturbances. Also in practice, as state changes, the objective and constraints might change, e.g., overtaking, lane changing. Fixed optimal control problem cannot capture this.}
+\end{enumerate}
+
+
+\section{State space model formulation}
+In this lecture, we use the state space representation of a discrete dynamic system. For a linear time-invariant system (LTI system), it has the form
+\begin{align*}
+    x_{k+1} & = Ax_k + Bu_k,\\
+    y_{k} & = Cx_k+ Du_k,
+\end{align*}
+
+where $x\in \mathbb{R}^{n_x}$ is the system state, $u\in\mathbb{R}^{n_u}$ is the system input, $y\in \mathbb{R}^{n_y}$ is the output. This exercise will demonstrate how to derive such a model for a simple chemical process.
+
+Consider the following chemical reaction kinetics for a two-step series reaction with three species $\text{Q}$, $\text{W}$ and $\text{E}$
+\begin{equation*}
+    \text{Q}\overset{r_1}{\rightarrow} \text{W}, \quad \text{W}\overset{r_2}{\rightarrow} \text{E}.
+\end{equation*}
+The material balances for the three species are
+\begin{center}
+    \begin{tikzpicture}[auto, >=latex']
+      % Nodes
+      \node[draw, rectangle, minimum width=2cm, minimum height=1cm] (input) {$\dot{c}_{\text{Q}} = -r_1$};
+      \node[draw, rectangle, right=of input, minimum width=2cm, minimum height=1cm] (system) {$\dot{c}_{\text{W}} = r_1-r_2$};
+      \node[draw, rectangle, right=of system, minimum width=2cm, minimum height=1cm] (output) {$\dot{c}_{\text{E}} = r_2$};
+    
+      % Arrows
+      \draw[->] (input) -- (system);
+      \draw[->] (system) -- (output);
+    \end{tikzpicture} 
+\end{center}
+We could discretize these three ordinary differential equations and obtain the discrete system
+
+\begin{equation*}
+    \frac{c_\text{Q}(k+1) - c_\text{Q}(k)}{\Delta t}= -r_1,\quad\frac{c_\text{W}(k+1) - c_\text{W}(k)}{\Delta t} = r_1-r_2,\quad\frac{c_\text{E}(k+1) - c_\text{E}(k)}{\Delta t} = r_2,
+\end{equation*}
+in which $c_j$ is the concentration of species $j$, and $r_1$ and $r_2$ are the rates $(\text{mol}/(\text{time}\cdot \text{vol}))$ at which the two reactions occur, $\Delta t$ is the discretization time interval, which is a known constant. We assume the rate law for the reaction kinetics is
+\begin{equation*}
+    r_1 = c_\text{Q}(k),\quad r_2 = c_\text{W}(k).
+\end{equation*}
+Write the linear state space model for this chemical reaction model. Assume we can measure $c_{\text{Q}}$, the concentration of component Q. What are $x$, $y$, $A$, and $C$ for this model? (Note that this system does not have inputs.) (Adapted from Exercise 1.1 in Model Predictive Control: Theory, Computation, and Design by J. B. Rawlings, D. Q. Mayne, and M. Diehl)
+
+\solution{If we denote $c_\text{Q},c_\text{W},c_\text{E}$ by $x_1,x_2,x_3$, respectively, we have
+\begin{align*}
+    x_1(k+1) &= (1 - \Delta t) x_1(k),\\
+    x_2(k+1) &= \Delta t x_1(k) + (1 - \Delta t) x_2(k),\\
+    x_3(k+1) &= \Delta t x_2(k) + x_3(k).
+\end{align*}
+Let $x = [x_1,x_2,x_3]^{\top}$. We can write $x(k+1) = Ax(k)$, where $A= \begin{bmatrix}
+    (1 - \Delta t)&0&0\\
+    \Delta t&(1 - \Delta t)&0\\
+    0&\Delta t&1
+\end{bmatrix}$.
+If we can measure $c_{\text{Q}}$, we have $y = x_1 = [1,0,0][x_1,x_2,x_3]^{\top}$. Hence $C = [1,0,0]$.
+}

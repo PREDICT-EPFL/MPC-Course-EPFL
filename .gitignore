@@ -102,3 +102,6 @@ pip-log.txt
 !programming_exercises/exercise8_explicit_mpc/ex8_sol_explicit_mpc.ipynb
 !programming_exercises/exercise9_nmpc/ex9_nmpc.ipynb
 !programming_exercises/exercise9_nmpc/ex9_sol_nmpc.ipynb
+
+# LaTeX build files of the written exercises
+written_exercises/build/

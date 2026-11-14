@@ -1,0 +1,64 @@
+\newpage
+\begin{center}
+\normalfont\Large\bfseries MPC exercise: week two
+\end{center}
+\setcounter{section}{0}
+% \section{Two player LQR}
+% Recall the one-player LQR formulation from the lecture 
+% \begin{align*}
+%         \min_u \quad &\sum_{k = 0}^{N-1} x_k^{\top}Qx_k + u_k^{\top}Ru_k + V_N(x_N),\\
+%     \text{s.t.}\quad &x_{k+1} =Ax_k + Bu_k,
+% \end{align*}
+% where the agent has control over $u_k$. Assuming the value function is $V_k(x) = x^{\top}P_kx$, we obtain the LQR controller
+% \begin{align*}
+%     u_k &= -(R+B^{\top}P_{k+1}B)^{-1}B^{T}P_{k+1}Ax_k.
+% \end{align*}
+% Now consider a two-player scenario where the system has control inputs $u$ and $v$ with a shared state $x$, $x_{k+1} =Ax_k + B_1u_k + B_2v_k$. Agent one has access to control input $u$ while agent two has access to control input $v$. For agent one, the cost function for the controller is 
+% \begin{align*}
+%     \min_u \quad &\sum_{k = 0}^N x_k^{\top}Q_1x_k + u_k^{\top}R_1u_k + V_{N,1}(x_N),\\
+%     \text{s.t.}\quad &x_{k+1} =Ax_k + B_1u_k + B_2v_k.
+% \end{align*}
+% For agent two, the cost function is 
+% \begin{align*}
+%     \min_v \quad &\sum_{k = 0}^N x_k^{\top}Q_2x_k + v_k^{\top}R_2v_k + V_{N,2}(x_N),\\
+%     \text{s.t.}\quad &x_{k+1} =Ax_k + B_1u_k + B_2v_k.
+% \end{align*}
+% Notice that two cost functions are coupled via the shared states $x$. In this exercise, we will develop the best response strategy controller for each player (also called Nash Equilibrium in game theory, not required by this course or the final exam).
+% \begin{enumerate}
+%     \item \label{ex2:1} Assume the value function at stage $k+1$ is $V_{k+1,1}(x) = x_{k+1}^{\top}P_{k+1,1}x_{k+1}$ for agent one, and $V_{k+1,2}(x) = x_{k+1}^{\top}P_{k+1,2}x_{k+1}$ for agent two. Write down the cost function $f_1$ and $f_2$ for dynamic programming as a function of $x_k,u_k,v_k$ at stage $k$ for each agent.\vspace{5\baselineskip}
+%     \item From \ref{ex2:1}, the cost function at stage $k$ is $f_1$ for agent one and $f_2$ for agent two. The best strategy is represented by the point where $\frac{\partial f_1(x_k,u_k,v_k)}{\partial u_k} = 0,\frac{\partial f_2(x_k,u_k,v_k)}{\partial v_k} = 0$. This will give us the best response strategy controller, $\begin{bmatrix}
+%         u_k\\
+%         v_k
+%     \end{bmatrix} = \begin{bmatrix}
+%         *&*\\
+%         *&*
+%     \end{bmatrix}^{-1}\begin{bmatrix}
+%         *\\
+%         *
+%     \end{bmatrix}x_k$. Complete those two matrices.\vspace{5\baselineskip}
+% \end{enumerate}
+\section{Understanding LQR}
+Consider the following LQR formulation
+\begin{align*}
+    \min_u\quad &\sum_{k=0}^{N-1}x_{k}^{\top}Qx_{k} + u_{k}^{\top}Ru_k + x_{N}^{\top}Px_N,\\
+    \text{s.t.}\quad &x_{k+1} = Ax_k + Bu_k, \forall k \in [N-1].
+\end{align*}
+\begin{enumerate}
+    \item Explain how the controller will behave when 1) $Q = 0, P = 0$. 2) $R= 0$.\vspace{3\baselineskip}
+    \item Explain the difference between finite horizon $LQR$ and infinite horizon $LQR$ ($N = \infty$).Why is the infinite horizon controller time invariant?\vspace{3\baselineskip}
+\end{enumerate}
+\section{Dynamic programming}
+Consider the following optimal control problem
+\begin{align*}
+    V^*(x_0) = \min_u \quad &\gamma x_N^2 + \sum_{i = 0}^{2}u_i^2,\\
+    \text{s.t.}\quad&x_{k+1} = x_k+ u_k,
+\end{align*}
+
+where only the cost of the final state is penalized with $\gamma \geq 0$. Your goal is to solve this problem with dynamic programming.
+\begin{enumerate}
+    \item Assume that $V_{k+1}(x_{k+1}) = hx_{k+1}^2$ and derive $V_k(x_k)$.\vspace{3\baselineskip}
+    \item What is $V_N(x_N)$?\vspace{3\baselineskip}
+    \item Compute the optimal value function $V^*(x_0)$ and the control law $\kappa^*(x_0)$ for a finite horizon $N$.\vspace{3\baselineskip}
+    \item Compute the closed-loop pole of your system. Will your system converge to zero for all finite $N$ and $\gamma$?\vspace{3\baselineskip}
+    \item What is your control law when $N\rightarrow \infty$. Will you system converge to zero for infinite $N$ and finite $\gamma$?
+\end{enumerate}

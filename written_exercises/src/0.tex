@@ -1,0 +1,49 @@
+\begin{center}
+\normalfont\Large\bfseries MPC exercise: week one
+\end{center}
+
+\section{Understanding MPC}
+\begin{enumerate}
+    \item What are the advantages and disadvantages of using MPC instead of using classical controllers such as PID?\vspace{3\baselineskip}
+    \item Explain how the receding-horizon works, what are the advantages and disadvantages of choosing a long horizon? \vspace{3\baselineskip}
+    \item What is the difference between open-loop optimal control and MPC? Why does MPC recompute the control sequence at each time step instead of using the whole open-loop plan?\vspace{3\baselineskip}
+    
+\end{enumerate}
+
+
+\section{State space model formulation}
+In this lecture, we use the state space representation of a discrete dynamic system. For a linear time-invariant system (LTI system), it has the form
+\begin{align*}
+    x_{k+1} & = Ax_k + Bu_k,\\
+    y_{k} & = Cx_k+ Du_k,
+\end{align*}
+
+where $x\in \mathbb{R}^{n_x}$ is the system state, $u\in\mathbb{R}^{n_u}$ is the system input, $y\in \mathbb{R}^{n_y}$ is the output. This exercise will demonstrate how to derive such a model from real-world applications. \textbf{Note that throughout this course, as well as during the exam, the state space system model will be provided, and so being able to derive them from first principles as in this question is optional}. 
+
+Consider the following chemical reaction kinetics for a two-step series reaction with three species $\text{Q},\text{W},\text{E}$
+\begin{equation*}
+    \text{Q}\overset{r_1}{\rightarrow} \text{W}, \quad \text{W}\overset{r_2}{\rightarrow} \text{E}.
+\end{equation*}
+The material balances for the three species are
+\begin{center}
+    \begin{tikzpicture}[auto, >=latex']
+      % Nodes
+      \node[draw, rectangle, minimum width=2cm, minimum height=1cm] (input) {$\dot{c}_{\text{Q}} = -r_1$};
+      \node[draw, rectangle, right=of input, minimum width=2cm, minimum height=1cm] (system) {$\dot{c}_{\text{w}} = r_1-r_2$};
+      \node[draw, rectangle, right=of system, minimum width=2cm, minimum height=1cm] (output) {$\dot{c}_{\text{E}} = r_2$};
+    
+      % Arrows
+      \draw[->] (input) -- (system);
+      \draw[->] (system) -- (output);
+    \end{tikzpicture} 
+\end{center}
+We could discretize these three ordinary differential equations and obtain the discrete system
+
+\begin{equation*}
+    \frac{c_\text{Q}(k+1) - c_\text{Q}(k)}{\Delta t}= -r_1, \frac{c_\text{W}(k+1) - c_\text{W}(k)}{\Delta t} = r_1-r_2,\quad\frac{c_\text{E}(k+1) - c_\text{E}(k)}{\Delta t} = r_2,
+\end{equation*}
+in which $c_j$ is the concentration of species $j$, and $r_1$ and $r_2$ are the rates $(\text{mol}/(\text{time}\cdot \text{vol}))$ at which the two reactions occur, $\Delta t$ is the discretization time interval, which is a known constant. We assume the rate law for the reaction kinetics is
+\begin{equation*}
+    r_1 = c_\text{Q}(k),\quad r_2 = c_\text{W}(k).
+\end{equation*}
+Write the linear state space model for this chemical reaction model. Assume we can measure $c_{\text{Q}}$, the concentration of component Q. What are $x$, $y$, $A$, and $C$ for this model? (Note that this system does not have inputs.) (Adapted from Exercise 1.1 in Model Predictive Control: Theory, Computation, and Design by J. B. Rawlings, D. Q. Mayne, and M. Diehl)
