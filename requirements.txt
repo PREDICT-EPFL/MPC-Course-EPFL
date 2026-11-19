@@ -3,9 +3,14 @@ numpy
 scipy
 matplotlib
 control
-casadi
+scaly[solvers,toolchain]==0.1.1
 mpt4py==0.1.7
 jupyter
 ipympl
+piqp
+cvxpy
+foxglove-sdk
+mcap
+pytest
 --find-links https://github.com/PREDICT-EPFL/MPC-Course-EPFL/releases/expanded_assets/mpt4py_wheels
 --find-links https://github.com/PREDICT-EPFL/MPC-Course-EPFL/releases/expanded_assets/pycddlib_wheels

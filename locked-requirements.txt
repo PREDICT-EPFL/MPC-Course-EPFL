@@ -3,64 +3,67 @@
 --find-links https://github.com/PREDICT-EPFL/MPC-Course-EPFL/releases/expanded_assets/mpt4py_wheels
 --find-links https://github.com/PREDICT-EPFL/MPC-Course-EPFL/releases/expanded_assets/pycddlib_wheels
 
-aiohappyeyeballs==2.6.1
+aiohappyeyeballs==2.7.1
     # via aiohttp
-aiohttp==3.12.15
+aiohttp==3.14.5
     # via
     #   jupyter-server-proxy
     #   wslink
 aiosignal==1.4.0
     # via aiohttp
-anyio==4.10.0
+anyio==4.16.0
     # via
     #   httpx
     #   jupyter-server
-appnope==0.1.4 ; sys_platform == 'darwin'
+anywidget==0.11.0
+    # via trame-pyvista
+appnope==1.0.0 ; sys_platform == 'darwin'
     # via ipykernel
 argon2-cffi==25.1.0
     # via jupyter-server
-argon2-cffi-bindings==25.1.0
+argon2-cffi-bindings==26.1.0
     # via argon2-cffi
-arrow==1.3.0
+arrow==1.4.0
     # via isoduration
-asttokens==3.0.0
+asttokens==3.0.2
     # via
     #   icecream
     #   stack-data
-async-lru==2.0.5
+async-lru==2.4.0
     # via jupyterlab
-attrs==25.3.0
+attrs==26.1.0
     # via
     #   aiohttp
+    #   cyclopts
     #   jsonschema
     #   referencing
-babel==2.17.0
+babel==2.18.0
     # via jupyterlab-server
-beautifulsoup4==4.13.5
+beautifulsoup4==4.15.0
     # via nbconvert
-bleach==6.2.0
+bleach==6.4.0
     # via nbconvert
-casadi==3.7.2
-    # via
-    #   -r requirements.txt
-    #   mpt4py
-certifi==2025.8.3
+casadi==3.8.2
+    # via mpt4py
+certifi==2026.10.23
     # via
     #   httpcore
     #   httpx
     #   requests
-cffi==2.0.0
+cffi==2.1.1
     # via
     #   argon2-cffi-bindings
     #   clarabel
     #   pyzmq
-charset-normalizer==3.4.3
+charset-normalizer==3.5.2
     # via requests
 clarabel==0.11.1
     # via
     #   cvxpy
     #   mpt4py
-cmcrameri==1.9
+cloudpickle==3.1.2
+    # via joblib
+cmcrameri==1.10
     # via pyvista
 cmocean==4.0.3
     # via pyvista
@@ -68,69 +71,83 @@ colorama==0.4.6
     # via
     #   icecream
     #   ipython
-colorcet==3.1.0
+    #   loguru
+    #   pytest
+colorcet==3.2.1
     # via pyvista
 comm==0.2.3
     # via
     #   ipykernel
     #   ipywidgets
-contourpy==1.3.3
+contourpy==1.4.0
     # via matplotlib
 control==0.10.2
     # via
     #   -r requirements.txt
     #   mpt4py
-cvxpy==1.7.2
-    # via mpt4py
+cvxpy==1.9.3
+    # via
+    #   -r requirements.txt
+    #   mpt4py
 cycler==0.12.1
     # via matplotlib
-debugpy==1.8.16
+cyclopts==5.4.0
+    # via pyvista
+debugpy==1.8.22
     # via ipykernel
-decorator==5.2.1
-    # via ipython
 defusedxml==0.7.1
     # via nbconvert
+docstring-parser==0.18.0
+    # via cyclopts
 ecos==2.0.14
     # via mpt4py
-executing==2.2.1
+executing==2.3.0
     # via
     #   icecream
     #   stack-data
-fastjsonschema==2.21.2
+fastjsonschema==2.22.3
     # via nbformat
-fonttools==4.59.2
+fonttools==4.68.0
     # via matplotlib
-fqdn==1.5.1
+foxglove-sdk==0.30.3
+    # via -r requirements.txt
+fqdn==1.6.0
     # via jsonschema
-frozenlist==1.7.0
+frozenlist==1.8.0
     # via
     #   aiohttp
     #   aiosignal
+fsspec==2026.9.0
+    # via pyvista
 h11==0.16.0
     # via httpcore
+highspy==1.15.1
+    # via cvxpy
 httpcore==1.0.9
     # via httpx
 httpx==0.28.1
     # via jupyterlab
-icecream==2.1.8
+icecream==2.2.0
     # via -r requirements.txt
-idna==3.10
+idna==3.20
     # via
     #   anyio
     #   httpx
     #   jsonschema
     #   requests
     #   yarl
-imageio==2.37.0
+imageio==2.38.1
     # via pyvista
-ipykernel==6.30.1
+iniconfig==2.3.1
+    # via pytest
+ipykernel==7.4.0
     # via
     #   jupyter
     #   jupyter-console
     #   jupyterlab
-ipympl==0.9.8
+ipympl==0.10.0
     # via -r requirements.txt
-ipython==9.5.0
+ipython==9.18.1
     # via
     #   ipykernel
     #   ipympl
@@ -138,14 +155,15 @@ ipython==9.5.0
     #   jupyter-console
 ipython-pygments-lexers==1.1.1
     # via ipython
-ipywidgets==8.1.7
+ipywidgets==8.1.9
     # via
+    #   anywidget
     #   ipympl
     #   jupyter
-    #   pyvista
+    #   trame-pyvista
 isoduration==20.11.0
     # via jsonschema
-jedi==0.19.2
+jedi==0.20.1
     # via ipython
 jinja2==3.1.6
     # via
@@ -154,15 +172,16 @@ jinja2==3.1.6
     #   jupyterlab-server
     #   nbconvert
     #   osqp
-joblib==1.5.2
+    #   scaly-sqp
+joblib==1.6.0
     # via
     #   osqp
     #   scikit-learn
-json5==0.12.1
+json5==0.17.3
     # via jupyterlab-server
-jsonpointer==3.0.0
+jsonpointer==3.10
     # via jsonschema
-jsonschema==4.25.1
+jsonschema==4.26.0
     # via
     #   jupyter-events
     #   jupyterlab-server
@@ -171,7 +190,11 @@ jsonschema-specifications==2025.9.1
     # via jsonschema
 jupyter==1.1.1
     # via -r requirements.txt
-jupyter-client==8.6.3
+jupyter-builder==1.2.4
+    # via
+    #   jupyterlab
+    #   notebook
+jupyter-client==8.10.0
     # via
     #   ipykernel
     #   jupyter-console
@@ -179,9 +202,10 @@ jupyter-client==8.6.3
     #   nbclient
 jupyter-console==6.6.3
     # via jupyter
-jupyter-core==5.8.1
+jupyter-core==5.9.1
     # via
     #   ipykernel
+    #   jupyter-builder
     #   jupyter-client
     #   jupyter-console
     #   jupyter-server
@@ -189,11 +213,11 @@ jupyter-core==5.8.1
     #   nbclient
     #   nbconvert
     #   nbformat
-jupyter-events==0.12.0
+jupyter-events==0.12.1
     # via jupyter-server
-jupyter-lsp==2.3.0
+jupyter-lsp==2.3.1
     # via jupyterlab
-jupyter-server==2.17.0
+jupyter-server==2.21.1
     # via
     #   jupyter-lsp
     #   jupyter-server-proxy
@@ -201,33 +225,37 @@ jupyter-server==2.17.0
     #   jupyterlab-server
     #   notebook
     #   notebook-shim
-jupyter-server-proxy==4.4.0
-    # via pyvista
-jupyter-server-terminals==0.5.3
+jupyter-server-proxy==4.6.0
+    # via trame-pyvista
+jupyter-server-terminals==0.5.4
     # via jupyter-server
-jupyterlab==4.4.7
+jupyterlab==4.6.6
     # via
     #   jupyter
     #   notebook
 jupyterlab-pygments==0.3.0
     # via nbconvert
-jupyterlab-server==2.27.3
+jupyterlab-server==2.28.1
     # via
     #   jupyterlab
     #   notebook
-jupyterlab-widgets==3.0.15
+jupyterlab-widgets==3.0.17
     # via ipywidgets
-kiwisolver==1.4.9
+kiwisolver==1.5.1
     # via matplotlib
-lark==1.2.2
+lark==1.3.1
     # via rfc3987-syntax
-markdown-it-py==4.0.0
+loguru==0.7.3
+    # via trame-dataclass
+lz4==4.4.5
+    # via mcap
+markdown-it-py==4.2.0
     # via rich
-markupsafe==3.0.2
+markupsafe==3.0.4
     # via
     #   jinja2
     #   nbconvert
-matplotlib==3.10.6
+matplotlib==3.11.2
     # via
     #   -r requirements.txt
     #   cmcrameri
@@ -237,48 +265,52 @@ matplotlib==3.10.6
     #   mpt4py
     #   pyvista
     #   vtk
-matplotlib-inline==0.1.7
+matplotlib-inline==0.2.2
     # via
     #   ipykernel
     #   ipython
+mcap==1.6.0
+    # via -r requirements.txt
 mdurl==0.1.2
     # via markdown-it-py
 meshio==5.3.5
     # via pyvista
-mistune==3.1.4
+mistune==3.4.0
     # via nbconvert
-more-itertools==10.8.0
+more-itertools==11.2.1
     # via trame-server
 mpt4py==0.1.7
     # via -r requirements.txt
-msgpack==1.1.1
+msgpack==1.2.4
     # via wslink
-multidict==6.6.4
+multidict==7.2.1
     # via
     #   aiohttp
     #   yarl
-nbclient==0.10.2
+narwhals==2.28.0
+    # via scikit-learn
+nbclient==0.11.0
     # via nbconvert
-nbconvert==7.16.6
+nbconvert==7.17.2
     # via
     #   jupyter
     #   jupyter-server
-nbformat==5.10.4
+nbformat==5.11.1
     # via
     #   jupyter-server
     #   nbclient
     #   nbconvert
-nest-asyncio==1.6.0
+nest-asyncio2==1.7.4
     # via
     #   ipykernel
-    #   pyvista
-notebook==7.4.5
+    #   trame-pyvista
+notebook==7.6.5
     # via jupyter
 notebook-shim==0.2.4
     # via
     #   jupyterlab
     #   notebook
-numpy==2.3.3
+numpy==2.5.4
     # via
     #   -r requirements.txt
     #   casadi
@@ -289,6 +321,7 @@ numpy==2.3.3
     #   control
     #   cvxpy
     #   ecos
+    #   highspy
     #   imageio
     #   ipympl
     #   matplotlib
@@ -297,13 +330,21 @@ numpy==2.3.3
     #   osqp
     #   piqp
     #   pyvista
+    #   pyvista-frd-reader
+    #   pyvista-miniply
+    #   pyvista-stl
+    #   pyvista-validation
+    #   qdldl
     #   qpsolvers
+    #   scaly
     #   scikit-learn
     #   scipy
     #   scs
-osqp==1.0.4
+    #   sparsediffpy
+    #   trame-rca
+osqp==1.1.3
     # via cvxpy
-packaging==25.0
+packaging==26.3
     # via
     #   cmcrameri
     #   cmocean
@@ -315,92 +356,124 @@ packaging==25.0
     #   matplotlib
     #   nbconvert
     #   pooch
+    #   pytest
+    #   trame-rca
+    #   trame-vtklocal
 pandocfilters==1.5.1
     # via nbconvert
-parso==0.8.5
+parso==0.8.7
     # via jedi
 pexpect==4.9.0 ; sys_platform != 'emscripten' and sys_platform != 'win32'
     # via ipython
-pillow==11.3.0
+pillow==13.0.0
     # via
     #   imageio
     #   ipympl
     #   matplotlib
     #   pyvista
-piqp==0.6.2
-    # via mpt4py
-platformdirs==4.4.0
+    #   trame-rca
+piqp==0.7.0
+    # via
+    #   -r requirements.txt
+    #   mpt4py
+platformdirs==4.14.5
     # via
     #   jupyter-core
     #   pooch
-pooch==1.8.2
+pluggy==1.7.0
+    # via pytest
+pooch==1.9.0
     # via pyvista
-prometheus-client==0.22.1
+prometheus-client==0.26.0
     # via jupyter-server
-prompt-toolkit==3.0.52
+prompt-toolkit==3.0.53
     # via
     #   ipython
     #   jupyter-console
-propcache==0.3.2
+propcache==0.5.4
     # via
     #   aiohttp
     #   yarl
-psutil==7.0.0
-    # via ipykernel
+psutil==7.2.2 ; sys_platform != 'android' and sys_platform != 'cygwin' and sys_platform != 'emscripten'
+    # via ipython
+psygnal==0.16.1
+    # via anywidget
 ptyprocess==0.7.0 ; os_name != 'nt' or (sys_platform != 'emscripten' and sys_platform != 'win32')
     # via
     #   pexpect
     #   terminado
-pure-eval==0.2.3
+pure-eval==0.2.4
     # via stack-data
 pycddlib==3.0.2
     # via mpt4py
-pycparser==2.23 ; implementation_name != 'PyPy'
+pycparser==3.12 ; implementation_name != 'PyPy'
     # via cffi
-pygments==2.19.2
+pygments==2.21.0
     # via
     #   icecream
     #   ipython
     #   ipython-pygments-lexers
     #   jupyter-console
     #   nbconvert
+    #   pytest
     #   rich
-pyparsing==3.2.4
+    #   rich-rst
+pyobjc-core==13.0 ; sys_platform == 'darwin'
+    # via pyobjc-framework-cocoa
+pyobjc-framework-cocoa==13.0 ; sys_platform == 'darwin'
+    # via pyvista
+pyparsing==3.3.3
     # via matplotlib
-python-dateutil==2.9.0.post0
+pytest==9.2.0
+    # via -r requirements.txt
+python-dateutil==4.0.0
     # via
     #   arrow
     #   jupyter-client
     #   matplotlib
-python-json-logger==3.3.0
+python-json-logger==4.2.0
     # via jupyter-events
-pyvista==0.46.3
-    # via mpt4py
-pywin32==311 ; platform_python_implementation != 'PyPy' and sys_platform == 'win32'
-    # via jupyter-core
-pywinpty==3.0.0 ; os_name == 'nt'
+pyvista==0.49.2
+    # via
+    #   mpt4py
+    #   pyvista-frd-reader
+    #   pyvista-zstd
+    #   trame-pyvista
+pyvista-frd-reader==0.3.1
+    # via pyvista
+pyvista-miniply==0.5.2
+    # via pyvista
+pyvista-stl==0.5.3
+    # via pyvista
+pyvista-validation==0.2.2
+    # via pyvista
+pyvista-zstd==0.8.0
+    # via pyvista
+pywinpty==3.1.2 ; os_name == 'nt'
     # via
     #   jupyter-server
     #   jupyter-server-terminals
     #   terminado
-pyyaml==6.0.2
+pyyaml==6.0.3
     # via
     #   jupyter-events
     #   trame
-pyzmq==27.1.0
+pyzmq==27.3.0
     # via
     #   ipykernel
     #   jupyter-client
     #   jupyter-console
     #   jupyter-server
-qpsolvers==4.8.1
+qdldl==0.1.9.post1
+    # via cvxpy
+qpsolvers==4.13.0
     # via mpt4py
-referencing==0.36.2
+referencing==0.37.0
     # via
     #   jsonschema
     #   jsonschema-specifications
     #   jupyter-events
-requests==2.32.5
+requests==2.34.2
     # via
     #   jupyterlab-server
     #   pooch
@@ -414,15 +487,34 @@ rfc3986-validator==0.1.1
     #   jupyter-events
 rfc3987-syntax==1.1.0
     # via jsonschema
-rich==14.1.0
-    # via meshio
-rpds-py==0.27.1
+rich==15.0.0
+    # via
+    #   cyclopts
+    #   meshio
+    #   rich-rst
+rich-rst==2.2.0
+    # via cyclopts
+rpds-py==2026.9.1
     # via
     #   jsonschema
     #   referencing
-scikit-learn==1.7.2
+scaly==0.1.1
+    # via
+    #   -r requirements.txt
+    #   scaly-ipopt
+    #   scaly-piqp
+    #   scaly-sqp
+scaly-ipopt==0.1.1
+    # via scaly
+scaly-piqp==0.1.1
+    # via
+    #   scaly
+    #   scaly-sqp
+scaly-sqp==0.1.0
+    # via scaly
+scikit-learn==1.9.1
     # via mpt4py
-scipy==1.16.2
+scipy==1.18.1
     # via
     #   -r requirements.txt
     #   clarabel
@@ -432,40 +524,38 @@ scipy==1.16.2
     #   mpt4py
     #   osqp
     #   piqp
+    #   qdldl
     #   qpsolvers
+    #   scaly
     #   scikit-learn
     #   scs
-scooby==0.10.1
+scooby==0.12.1
     # via pyvista
-scs==3.2.8
+scs==3.3.1
     # via cvxpy
-send2trash==1.8.3
+send2trash==2.1.0
     # via jupyter-server
-setuptools==80.9.0
-    # via
-    #   jupyterlab
-    #   osqp
+setuptools==84.2.1
+    # via osqp
 simpervisor==1.0.0
     # via jupyter-server-proxy
 six==1.17.0
-    # via
-    #   python-dateutil
-    #   rfc3339-validator
-sniffio==1.3.1
-    # via anyio
-soupsieve==2.8
+    # via rfc3339-validator
+soupsieve==4.0.1
     # via beautifulsoup4
+sparsediffpy==0.6.1
+    # via cvxpy
 stack-data==0.6.3
     # via ipython
 terminado==0.18.1
     # via
     #   jupyter-server
     #   jupyter-server-terminals
-threadpoolctl==3.6.0
+threadpoolctl==3.8.0
     # via scikit-learn
-tinycss2==1.4.0
+tinycss2==1.5.1
     # via bleach
-tornado==6.5.2
+tornado==6.6
     # via
     #   ipykernel
     #   jupyter-client
@@ -474,12 +564,13 @@ tornado==6.5.2
     #   jupyterlab
     #   notebook
     #   terminado
-traitlets==5.14.3
+traitlets==5.16.1
     # via
     #   ipykernel
     #   ipympl
     #   ipython
     #   ipywidgets
+    #   jupyter-builder
     #   jupyter-client
     #   jupyter-console
     #   jupyter-core
@@ -491,56 +582,89 @@ traitlets==5.14.3
     #   nbclient
     #   nbconvert
     #   nbformat
-trame==3.12.0
-    # via pyvista
-trame-client==3.10.2
+trame==4.0.0
     # via
-    #   pyvista
+    #   trame-pyvista
+    #   trame-vtklocal
+trame-client==4.1.4
+    # via
     #   trame
+    #   trame-dataclass
+    #   trame-pyvista
+    #   trame-rca
     #   trame-vtk
     #   trame-vuetify
-trame-common==1.0.1
+trame-common==1.2.9
     # via
     #   trame
     #   trame-client
-trame-server==3.6.0
+    #   trame-pyvista
+    #   trame-rca
+    #   trame-server
+    #   trame-vtklocal
+trame-dataclass==2.2.2
+    # via trame-pyvista
+trame-pyvista==0.3.6
+    # via pyvista
+trame-rca==2.11.8
+    # via trame-pyvista
+trame-server==4.1.0
     # via
-    #   pyvista
     #   trame
-trame-vtk==2.9.1
-    # via pyvista
-trame-vuetify==3.0.3
-    # via pyvista
-types-python-dateutil==2.9.0.20250822
-    # via arrow
-typing-extensions==4.15.0
+    #   trame-pyvista
+trame-vtk==2.11.17
+    # via trame-pyvista
+trame-vtklocal==1.8.1
+    # via trame-pyvista
+trame-vuetify==3.3.0
+    # via trame-pyvista
+typing-extensions==4.16.0
     # via
+    #   aiohttp
     #   aiosignal
     #   anyio
+    #   anywidget
     #   beautifulsoup4
+    #   jupyter-client
     #   pyvista
+    #   pyvista-validation
     #   referencing
+    #   trame-dataclass
+tzdata==2026.6
+    # via
+    #   arrow
+    #   python-dateutil
 uri-template==1.3.0
     # via jsonschema
-urllib3==2.5.0
+urllib3==2.8.0
     # via requests
-vtk==9.5.1
+vtk==9.7.2
     # via pyvista
-wcwidth==0.2.13
+wcwidth==0.9.4
     # via prompt-toolkit
-webcolors==24.11.1
+webcolors==25.10.0
     # via jsonschema
-webencodings==0.5.1
+webencodings==0.6.1
     # via
     #   bleach
     #   tinycss2
-websocket-client==1.8.0
+websocket-client==1.9.2
     # via jupyter-server
-widgetsnbextension==4.0.14
+widgetsnbextension==4.0.16
     # via ipywidgets
-wslink==2.4.0
+win32-setctime==1.2.1 ; sys_platform == 'win32'
+    # via loguru
+wslink==2.6.0
     # via
     #   trame
+    #   trame-pyvista
+    #   trame-rca
     #   trame-server
-yarl==1.20.1
+yarl==1.25.1
     # via aiohttp
+zig-bin==0.17.0 ; platform_machine != 'x86_64' or sys_platform != 'darwin'
+    # via scaly
+ziglang==0.17.1 ; platform_machine == 'x86_64' and sys_platform == 'darwin'
+    # via scaly
+zstandard==0.25.0
+    # via mcap
