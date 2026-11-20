@@ -42,4 +42,4 @@ jobs:
         run: pip install -r locked-requirements.txt --only-binary=pycddlib,mpt4py
 
       - name: test env
-        run: python -c 'import mpt4py; import scaly; import pycddlib; print("All imports successful")'
+        run: python -c 'import mpt4py; import scaly; import cdd; print("All imports successful")'
